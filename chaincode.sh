@@ -1,4 +1,6 @@
 #! /bin/bash
+INPUT=data.csv
+[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
 while IFS="," read -r alias_val did_val verkey_val
 do
     peer chaincode invoke -n $CC_NAME -C $CHANNEL_NAME -c '{"args" : ["Init","[{\"alias\":\"$alias_val\",\"dest\":\"$did_val\",\"verkey\":\"$verkey_val\"}]"]}' \
@@ -10,4 +12,4 @@ do
                             --tlsRootCertFiles $ORG1_CA \
                             --waitForEvent \
                             --isInit
-done < <(tail -n +1 data.csv)
+done < <(tail -n +1 $INPUT)
